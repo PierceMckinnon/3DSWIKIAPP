@@ -1,0 +1,46 @@
+; Example PICA200 vertex shader
+
+; Uniforms
+.fvec P[4],MV[4]
+.fvec S,L
+
+; Constants
+.constf myconst(0.0, 1.0, -1.0, 0.1)
+.constf myconst2(0.3, 0.0, 0.0, 0.0)
+.alias  zeros myconst.xxxx ; Vector full of zeros
+.alias  ones  myconst.yyyy ; Vector full of ones
+
+; Outputs
+.out outpos position
+.out outclr color
+.out outtex texcoord1
+
+; Inputs (defined as aliases for convenience)
+.alias inpos v0
+;both colour at texture are passed through second attribute configured with texenv
+.alias inclrtex v1
+;.alias intex v2
+
+.proc main
+	; Force the w component of inpos to be 1.0
+	mov r0.xyz, inpos
+	mov r0.w,   ones
+
+	
+	mov outtex,inclrtex
+
+	dp4 r1.x, MV[0], r0
+	dp4 r1.y, MV[1], r0
+	dp4 r1.z, MV[2], r0
+	dp4 r1.w, MV[3], r0
+
+	dp4 outpos.x, P[0], r1
+	dp4 outpos.y, P[1], r1
+	dp4 outpos.z, P[2], r1
+	dp4 outpos.w, P[3], r1
+
+	mov r3, L
+	mov r4, inclrtex
+	mad outclr,r3,S,r4
+	end
+.end
