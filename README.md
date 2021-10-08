@@ -1,1 +1,1 @@
-Small application to provide immediate reference to information on hacking the 3DS. 
+Small application to provide immediate reference to information on 3DS CFW  
